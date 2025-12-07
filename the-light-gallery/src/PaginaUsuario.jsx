@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 
+// Si tienes el logo en public usa "/logo.png", si lo importaste úsalo aquí
+// import logo from './logo.png'; 
 
 const PaginaUsuario = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // 👈 Para saber en qué página estamos
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = () => {
       navigate('/login');
   };
 
-  // Función para resaltar el botón activo
   const isActive = (path) => location.pathname.includes(path);
 
   return (
-    <div className="d-flex" style={{ minHeight: '100vh', backgroundColor: '#141414', color: 'white' }}>
+    // 1. CONTENEDOR PRINCIPAL BLOQUEADO (NO SCROLL GENERAL)
+    <div className="d-flex" style={{ height: '100vh', overflow: 'hidden', backgroundColor: '#141414', color: 'white' }}>
         
-        {/* 1. BOTÓN MÓVIL (Mejorado visualmente) */}
+        {/* BOTÓN MÓVIL */}
         <button 
             className="btn btn-danger d-lg-none position-fixed m-3 shadow" 
             style={{ zIndex: 1100, top: 0, left: 0, borderRadius: '50%', width: '50px', height: '50px' }} 
@@ -26,58 +28,48 @@ const PaginaUsuario = () => {
             {isMenuOpen ? '✕' : '☰'}
         </button>
         
-        {/* 2. BARRA LATERAL (SIDEBAR) DE LUJO */}
+        {/* 2. BARRA LATERAL (SIDEBAR) */}
         <div 
             className={`text-white p-4 d-flex flex-column ${isMenuOpen ? 'd-block' : 'd-none d-lg-block'}`} 
             style={{ 
                 width: '280px', 
                 flexShrink: 0, 
-                // Degradado oscuro estilo Netflix/Cine
                 background: 'linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%)',
+                // En móvil es fixed, en escritorio ocupa su espacio
                 position: isMenuOpen ? 'fixed' : 'relative',
-                height: '100vh',
+                height: '100%', // Ocupa todo el alto disponible
                 zIndex: 1000,
                 transition: 'all 0.3s',
-                boxShadow: '4px 0 15px rgba(0,0,0,0.3)'
+                boxShadow: '4px 0 15px rgba(0,0,0,0.3)',
+                // Si el menú es muy alto, permite scroll interno solo en el menú
+                overflowY: 'auto' 
             }}
         >
             
-            {/* LOGO CON ICONO */}
-            {/* LOGO DESDE CARPETA PUBLIC */}
-            <div 
-                className="d-flex align-items-center mb-5"
-                style={{ marginTop: isMenuOpen ? '60px' : '0' }}
-            >
+            {/* LOGO */}
+            <div className="d-flex align-items-center mb-5" style={{ marginTop: isMenuOpen ? '60px' : '0' }}>
                 <div className="me-3" style={{ width: '50px', height: '50px' }}>
-                    
-                    {/* Si tu archivo está en la carpeta public y se llama "logo.png",
-                      la ruta es simplemente "/logo.png".
-                      
-                      Si lo tienes en una subcarpeta (ej: public/img/logo.png),
-                      pondrías "/img/logo.png"
-                    */}
+                     {/* Asegúrate de poner aquí tu logo correcto */}
                     <img 
                         src="/logo.png" 
-                        alt="Logo Cine Leonelda" 
-                        style={{ 
-                            width: '100%', 
-                            height: '100%', 
-                            objectFit: 'contain' 
-                        }} 
+                        alt="Cine Logo" 
+                        style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                        onError={(e) => {
+                            // Fallback por si no carga la imagen
+                            e.target.onerror = null; 
+                            e.target.style.display = 'none';
+                            e.target.parentNode.innerHTML = '🎬'; 
+                        }}
                     />
-                    
                 </div>
-                
                 <div>
                     <h5 className="m-0 fw-bold" style={{ letterSpacing: '1px' }}>CINE LEONELDA</h5>
                     <small className="text-white-50" style={{ fontSize: '0.8rem' }}>Panel de Usuario</small>
                 </div>
             </div>
             
-            {/* OPCIONES DEL MENÚ */}
+            {/* OPCIONES */}
             <ul className="nav nav-pills flex-column flex-grow-1 gap-2">
-                
-                {/* BOTÓN PERFIL */}
                 <li className="nav-item">
                     <Link 
                         to="perfil" 
@@ -85,16 +77,9 @@ const PaginaUsuario = () => {
                         onClick={() => setIsMenuOpen(false)}
                         style={{ transition: '0.2s', padding: '12px 15px' }}
                     >
-                        {/* Icono Usuario */}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="me-3" viewBox="0 0 16 16">
-                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                            <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                        </svg>
-                        Mi Perfil
+                        <i className="bi bi-person-circle me-3 fs-5"></i> Mi Perfil
                     </Link>
                 </li>
-
-                {/* BOTÓN RESERVAS */}
                 <li className="nav-item">
                     <Link 
                         to="reservas" 
@@ -102,16 +87,12 @@ const PaginaUsuario = () => {
                         onClick={() => setIsMenuOpen(false)}
                         style={{ transition: '0.2s', padding: '12px 15px' }}
                     >
-                        {/* Icono Ticket */}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="me-3" viewBox="0 0 16 16">
-                            <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6V4.5ZM1.5 4a.5.5 0 0 0-.5.5v1.05a2.5 2.5 0 0 1 0 4.9v1.05a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-1.05a2.5 2.5 0 0 1 0-4.9V4.5a.5.5 0 0 0-.5-.5h-13Z"/>
-                        </svg>
-                        Mis Reservas
+                        <i className="bi bi-ticket-perforated me-3 fs-5"></i> Mis Reservas
                     </Link>
                 </li>
             </ul>
 
-            <div className="mt-auto border-top border-secondary pt-4">
+            <div className="mt-auto border-top border-secondary pt-4 pb-5 pb-lg-0">
                 <button 
                     className="btn btn-outline-light w-100 py-2"
                     onClick={handleLogout}
@@ -121,8 +102,15 @@ const PaginaUsuario = () => {
             </div>
         </div>
 
-        {/* 3. CONTENIDO PRINCIPAL */}
-        <main className="flex-grow-1 p-4" style={{ overflowY: 'auto' }}>
+        {/* 3. CONTENIDO PRINCIPAL (SCROLL INDEPENDIENTE) */}
+        <main 
+            className="flex-grow-1 p-4 p-lg-5" 
+            style={{ 
+                height: '100%',       // Ocupa todo el alto
+                overflowY: 'auto',    // 👈 AQUÍ ESTÁ LA CLAVE: Solo esto hace scroll
+                position: 'relative'
+            }}
+        >
             <Outlet /> 
         </main>
     </div>
