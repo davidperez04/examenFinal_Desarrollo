@@ -1,6 +1,5 @@
-/* src/MisReservas.css */
+/* src/MisReservas.css - MODO CINE DARK */
 
-/* Reglas CSS que solo aplican en pantallas menores a 992px (móvil) */
 @media screen and (max-width: 991px) {
     
     /* 1. Oculta las cabeceras originales */
@@ -8,30 +7,40 @@
         display: none;
     }
 
-    /* 2. Hace que cada fila se vea como un bloque de tarjeta vertical */
+    /* 2. Estilo de tarjeta para cada fila en el móvil */
     .table-mobile-card tbody tr {
         display: block;
-        margin-bottom: 0.8rem;
-        border: 1px solid #dee2e6;
-        border-radius: 0.5rem;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+        margin-bottom: 1rem;
+        /* Fondo gris un poco más claro que la base para resaltar */
+        background-color: #2b2b2b; 
+        border: 1px solid #444;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     }
 
-    /* 3. Hace que cada dato (celda) ocupe toda la línea */
+    /* 3. Celdas ocupando toda la línea */
     .table-mobile-card tbody td {
         display: block;
         text-align: right;
-        padding-right: 15px;
-        position: relative;
+        padding: 10px 0;
+        border-bottom: 1px solid #444; /* Línea divisoria sutil */
+        color: white; /* Texto blanco */
     }
 
-    /* 4. Usa el data-label para mostrar la cabecera a la izquierda del dato */
+    /* Quitar borde al último elemento */
+    .table-mobile-card tbody td:last-child {
+        border-bottom: none;
+    }
+
+    /* 4. ETIQUETAS (Data Label) A LA IZQUIERDA */
     .table-mobile-card tbody td::before {
         content: attr(data-label);
         float: left;
         font-weight: bold;
-        color: #343a40; 
-        text-align: left;
-        margin-right: 10px;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        color: #e50914; /* ROJO CINE para las etiquetas */
     }
 }

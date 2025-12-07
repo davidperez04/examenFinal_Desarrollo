@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
-// Asegúrate de importar tu CSS si es necesario, o usa Bootstrap nativo
 
 const PerfilUsuario = () => {
-    // 1. ESTADOS: Guardamos la info en variables modificables
+    // 1. ESTADOS (Mantenemos tu misma lógica)
     const [datos, setDatos] = useState({
         nombre: 'Juan Pérez (Ejemplo)',
         email: 'admin@cine.com (Ejemplo)'
     });
 
-    // Estado para saber si estamos en "Modo Edición" o "Modo Ver"
     const [editando, setEditando] = useState(false);
 
     // 2. FUNCIONES
-    // Captura lo que escribes en los inputs
     const handleChange = (e) => {
         const { name, value } = e.target;
         setDatos({
@@ -21,19 +18,14 @@ const PerfilUsuario = () => {
         });
     };
 
-    // Alterna entre editar y guardar
     const toggleEdicion = () => {
         if (editando) {
-            // Aquí iría la lógica para guardar en Base de Datos real
             alert("¡Información actualizada correctamente!");
         }
         setEditando(!editando);
     };
 
-    // Simulación de cambio de contraseña
     const cambiarPassword = () => {
-        // Para el examen, una alerta es suficiente para mostrar interactividad
-        // sin complicarnos creando otro formulario complejo.
         const nuevaPass = prompt("Ingresa tu nueva contraseña:");
         if (nuevaPass) {
             alert("Contraseña modificada con éxito.");
@@ -41,20 +33,30 @@ const PerfilUsuario = () => {
     };
 
     return (
-        <div className="card shadow p-4">
-            
-            <h2 className="text-primary mb-4 fw-bold">
+        // CONTENEDOR TARJETA OSCURA
+        <div 
+            className="card p-5 shadow-lg border-0" 
+            style={{ 
+                backgroundColor: '#1f1f1f', // Gris oscuro elegante
+                color: 'white',
+                borderRadius: '15px'
+            }}
+        >
+            {/* ENCABEZADO */}
+            <h2 className="mb-4 fw-bold text-white border-bottom border-secondary pb-3">
+                <i className="bi bi-person-circle me-3 text-danger"></i>
                 Mi Perfil de Usuario
             </h2>
             
-            <p className="lead text-secondary">
+            <p className="lead text-white-50 mb-5">
                 Aquí puedes gestionar tu información personal y contraseña.
             </p>
 
-            <div className="row mt-4">
+            <div className="row">
+                
                 {/* CAMPO NOMBRE */}
-                <div className="col-md-6 mb-3">
-                    <label className="form-label fw-bold">Nombre</label>
+                <div className="col-md-6 mb-4">
+                    <label className="form-label fw-bold text-danger">Nombre</label>
                     {editando ? (
                         <input 
                             type="text" 
@@ -62,15 +64,17 @@ const PerfilUsuario = () => {
                             name="nombre"
                             value={datos.nombre} 
                             onChange={handleChange}
+                            // Estilo input oscuro
+                            style={{ backgroundColor: '#333', color: 'white', border: '1px solid #555' }}
                         />
                     ) : (
-                        <p className="form-control-plaintext border-bottom">{datos.nombre}</p>
+                        <p className="fs-5 border-bottom border-secondary py-2">{datos.nombre}</p>
                     )}
                 </div>
                 
                 {/* CAMPO CORREO */}
-                <div className="col-md-6 mb-3">
-                    <label className="form-label fw-bold">Correo Electrónico</label>
+                <div className="col-md-6 mb-4">
+                    <label className="form-label fw-bold text-danger">Correo Electrónico</label>
                     {editando ? (
                         <input 
                             type="email" 
@@ -78,28 +82,32 @@ const PerfilUsuario = () => {
                             name="email"
                             value={datos.email} 
                             onChange={handleChange}
+                            style={{ backgroundColor: '#333', color: 'white', border: '1px solid #555' }}
                         />
                     ) : (
-                        <p className="form-control-plaintext border-bottom">{datos.email}</p>
+                        <p className="fs-5 border-bottom border-secondary py-2">{datos.email}</p>
                     )}
                 </div>
                 
                 {/* BOTONES DE ACCIÓN */}
-                <div className="col-12 mt-4">
+                <div className="col-12 mt-4 d-flex gap-3">
                     <button 
-                        className={`btn ${editando ? 'btn-success' : 'btn-warning'}`}
+                        className={`btn px-4 py-2 fw-bold ${editando ? 'btn-success' : 'btn-danger'}`}
                         onClick={toggleEdicion}
                     >
-                        {editando ? 'Guardar Cambios' : 'Editar Información'}
+                        {editando ? (
+                            <span><i className="bi bi-check-lg me-2"></i>Guardar Cambios</span>
+                        ) : (
+                            <span><i className="bi bi-pencil-square me-2"></i>Editar Información</span>
+                        )}
                     </button>
                     
-                    {/* Botón cambiar contraseña: solo visible si NO estamos editando info */}
                     {!editando && (
                         <button 
-                            className="btn btn-outline-danger ms-3"
+                            className="btn btn-outline-light px-4 py-2"
                             onClick={cambiarPassword}
                         >
-                            Cambiar Contraseña
+                            <i className="bi bi-key me-2"></i> Cambiar Contraseña
                         </button>
                     )}
                 </div>

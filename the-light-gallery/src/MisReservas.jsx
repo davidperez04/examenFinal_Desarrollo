@@ -1,52 +1,67 @@
-// src/MisReservas.jsx 
-
 import React from 'react';
-// 👈 IMPORTANTE: Aquí se importa el archivo de estilos CSS que crea la magia en móvil
+// Importamos el CSS (que actualizaremos en el siguiente paso)
 import './MisReservas.css'; 
 
 const MisReservas = () => {
     return (
-        // Contenedor principal con estilo de tarjeta
-        <div className="card shadow p-4">
+        // 1. TARJETA OSCURA
+        <div 
+            className="card p-4 shadow-lg border-0"
+            style={{ 
+                backgroundColor: '#1f1f1f', // Gris oscuro
+                color: 'white',
+                borderRadius: '15px'
+            }}
+        >
             
-            <h2 className="text-success mb-4 fw-bold">
+            {/* ENCABEZADO CON ESTILO */}
+            <h2 className="mb-4 fw-bold text-white border-bottom border-secondary pb-3">
+                <i className="bi bi-ticket-perforated me-3 text-danger"></i>
                 Historial de Mis Reservas
             </h2>
             
-            <p className="lead text-secondary">
+            <p className="lead text-white-50">
                 Revisa el estado de tus reservas activas y pasadas.
             </p>
 
-            {/* DIV table-responsive: permite el scroll horizontal en caso extremo */}
             <div className="table-responsive">
                 
-                {/* table-mobile-card: Clase para activar los estilos de tarjeta en móvil */}
-                <table className="table table-hover table-mobile-card mt-4">
-                    <thead className="table-light">
-                        <tr>
-                            {/* Los anchos son una guía de estilo, puedes ajustarlos si es necesario */}
-                            <th style={{ width: '20%' }}>Película</th>
+                {/* 2. TABLA OSCURA (table-dark) */}
+                <table className="table table-dark table-hover table-mobile-card mt-4" 
+                       style={{ backgroundColor: 'transparent' }}>
+                    
+                    {/* Encabezado con texto rojo o blanco según prefieras */}
+                    <thead>
+                        <tr style={{ borderBottom: '2px solid #444' }}>
+                            <th className="text-danger" style={{ width: '20%' }}>Película</th>
                             <th style={{ width: '25%' }}>Fecha y Hora</th>
                             <th style={{ width: '15%' }}>Asientos</th>
                             <th style={{ width: '20%' }}>Total</th>
                             <th style={{ width: '20%' }}>Estado</th>
                         </tr>
                     </thead>
+                    
                     <tbody>
-                        <tr>
-                            {/* 👈 AÑADIR data-label A CADA CELDA (<td>) */}
-                            <td data-label="Película">Oppenheimer</td>
-                            <td data-label="Fecha y Hora">2025-12-01 19:30</td>
+                        {/* FILA 1 */}
+                        <tr style={{ borderBottom: '1px solid #333' }}>
+                            <td data-label="Película" className="fw-bold text-white">Oppenheimer</td>
+                            <td data-label="Fecha y Hora" className="text-white-50">2025-12-01 19:30</td>
                             <td data-label="Asientos">A5, A6</td>
-                            <td data-label="Total">$ 20.000</td>
-                            <td data-label="Estado"><span className="badge bg-success">Activa</span></td>
+                            <td data-label="Total" className="text-success fw-bold">$ 20.000</td>
+                            <td data-label="Estado">
+                                <span className="badge bg-success">Activa</span>
+                            </td>
                         </tr>
-                        <tr>
-                            <td data-label="Película">Barbie</td>
-                            <td data-label="Fecha y Hora">2025-11-20 16:00</td>
+
+                        {/* FILA 2 */}
+                        <tr style={{ borderBottom: '1px solid #333' }}>
+                            <td data-label="Película" className="fw-bold text-white">Barbie</td>
+                            <td data-label="Fecha y Hora" className="text-white-50">2025-11-20 16:00</td>
                             <td data-label="Asientos">C1, C2, C3</td>
-                            <td data-label="Total">$ 30.000</td>
-                            <td data-label="Estado"><span className="badge bg-secondary">Finalizada</span></td>
+                            <td data-label="Total" className="text-success fw-bold">$ 30.000</td>
+                            <td data-label="Estado">
+                                <span className="badge bg-secondary">Finalizada</span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

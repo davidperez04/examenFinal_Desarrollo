@@ -1,13 +1,8 @@
-// CrearCuenta.jsx
-//import React from 'react';
-// CrearCuenta.jsx
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-// Asegúrate de importar Link si lo usas en el footer de la página
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 
 const CrearCuenta = () => {
-  
-  // 1. ESTADOS LOCALES para capturar todos los inputs
+  // 1. ESTADOS DEL FORMULARIO
   const [nombre, setNombre] = useState('');
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
@@ -15,111 +10,147 @@ const CrearCuenta = () => {
 
   const navigate = useNavigate();
 
-  // 2. FUNCIÓN PARA MANEJAR EL REGISTRO
+  // 2. ESTADO PARA EL FONDO (CARRUSEL - Igual que en Login)
+  const [indiceFondo, setIndiceFondo] = useState(0);
+
+  const fondos = [
+    "https://image.tmdb.org/t/p/original/icmmSD4vTTDKOq2vvdulafOGw93.jpg",                       // Donnie Darko
+      "https://image.tmdb.org/t/p/original/sGJfy0JcTiRSCpnqtmAJQbP7bFa.jpg",
+      "https://image.tmdb.org/t/p/original/hI4ea9G5fNCKhlh6DcgpP9du9No.jpg",
+      "https://image.tmdb.org/t/p/original/kzXww7ArcNNuyIC3m9q6cXLk6Mj.jpg",
+      "https://image.tmdb.org/t/p/original/nqpabbCImaOmyASYKGVfD0xOZQR.jpg"
+  ];
+
+  // Cambio automático de fondo
+  useEffect(() => {
+    const intervalo = setInterval(() => {
+      setIndiceFondo((prev) => (prev + 1) % fondos.length);
+    }, 5000);
+    return () => clearInterval(intervalo);
+  }, [fondos.length]);
+
+
+  // 3. FUNCIÓN DE REGISTRO
   const handleRegister = (e) => {
     e.preventDefault();
 
-    // Lógica básica de validación:
     if (password !== confirmPassword) {
       alert("⚠️ Error: Las contraseñas no coinciden.");
-      return; // Detiene la función si hay error
+      return;
     }
 
-    // Aquí iría la lógica para enviar los datos a una base de datos/API
-    console.log("Datos de registro:", { nombre, correo, password });
+    // Aquí iría tu lógica de guardado real
+    console.log("Registrando:", { nombre, correo, password });
 
-    // 3. ÉXITO: Simula el registro y redirige al Login
-    alert(`🎉 ¡Registro exitoso para ${nombre}! Ahora puedes iniciar sesión.`);
-    navigate('/login'); // Redirige de vuelta a la página de login
+    alert(`🎉 ¡Bienvenido a Cine Leonelda, ${nombre}!`);
+    navigate('/login'); 
   };
 
   return (
-// 1. 👈 CONTENEDOR PRINCIPAL CON ESTILOS DE FONDO Y CENTRADO
-        <div 
-          className="container-fluid bg-black text-white min-vh-100 d-flex align-items-center justify-content-center"
-          style={{
-            // 2. 👈 RUTA DE TU IMAGEN DE FONDO
-            backgroundImage: 'url(/fondo.png)', 
-            backgroundSize: 'cover', 
-            backgroundPosition: 'center', 
-          }}
-        >
-        {/* 3. TARJETA DE REGISTRO */}
-      <div className="card shadow p-4" style={{ width: '28rem',
-         backgroundColor: 'rgba(124, 113, 113, 0.47)',
-       }}>
+    <div 
+      className="d-flex align-items-center justify-content-center"
+      style={{
+        minHeight: '100vh',
+        // Fondo dinámico
+        backgroundImage: `url('${fondos[indiceFondo]}')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        transition: 'background-image 1s ease-in-out'
+      }}
+    >
+      {/* TARJETA OSCURA (Estilo Cine) */}
+      <div 
+        className="card p-4 shadow-lg" 
+        style={{ 
+            width: '28rem',
+            backgroundColor: 'rgba(0, 0, 0, 0.85)', // Negro translúcido
+            border: '1px solid #444', 
+            borderRadius: '15px',
+            color: 'white'
+        }}
+      >
         
-        <h2 className="card-title text-center mb-4 fw-bold text-black">
-          Crear Cuenta Cine Leonelda
+        <h2 className="text-center mb-4 fw-bold text-white">
+          Únete a Cine Leonelda
         </h2>
         
-        {/* 5. FORMULARIO VINCULADO A handleRegister */}
         <form onSubmit={handleRegister}>
           
-          {/* CAMPO 1: Nombre Completo */}
-          <div className="mb-3 text-black text-start">
-            <label htmlFor="inputNombre" className="form-label">Nombre Completo</label>
+          {/* CAMPO: Nombre */}
+          <div className="mb-3 text-start">
+            <label className="form-label text-secondary ms-1">Nombre Completo</label>
             <input 
               type="text" 
               className="form-control" 
-              id="inputNombre" 
               placeholder="Ej: Juan Pérez" 
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               required 
+              style={{ backgroundColor: '#222', color: 'white', border: '1px solid #555' }}
             />
           </div>
           
-          {/* CAMPO 2: Correo Electrónico */}
-          <div className="mb-3 text-black text-start">
-            <label htmlFor="inputEmail" className="form-label">Correo Electrónico</label>
+          {/* CAMPO: Correo */}
+          <div className="mb-3 text-start">
+            <label className="form-label text-secondary ms-1">Correo Electrónico</label>
             <input 
               type="email" 
               className="form-control" 
-              id="inputEmail" 
               placeholder="ejemplo@correo.com" 
               value={correo}
               onChange={(e) => setCorreo(e.target.value)}
               required 
+              style={{ backgroundColor: '#222', color: 'white', border: '1px solid #555' }}
             />
           </div>
           
-          {/* CAMPO 3: Contraseña */}
-          <div className="mb-3 text-black text-start">
-            <label htmlFor="inputPassword" className="form-label">Contraseña</label>
+          {/* CAMPO: Contraseña */}
+          <div className="mb-3 text-start">
+            <label className="form-label text-secondary ms-1">Contraseña</label>
             <input 
               type="password" 
               className="form-control" 
-              id="inputPassword" 
+              placeholder="••••••" 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required 
+              style={{ backgroundColor: '#222', color: 'white', border: '1px solid #555' }}
             />
           </div>
 
-          {/* CAMPO 4: Confirmar Contraseña */}
-          <div className="mb-3 text-black text-start">
-            <label htmlFor="inputConfirmPassword" className="form-label">Confirmar Contraseña</label>
+          {/* CAMPO: Confirmar */}
+          <div className="mb-4 text-start">
+            <label className="form-label text-secondary ms-1">Confirmar Contraseña</label>
             <input 
               type="password" 
               className="form-control" 
-              id="inputConfirmPassword" 
+              placeholder="••••••" 
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required 
+              style={{ backgroundColor: '#222', color: 'white', border: '1px solid #555' }}
             />
           </div>
           
-          {/* Botón de Registro */}
-          <button type="submit" className="btn btn-dark w-100 mt-3">
-            Registrarme
+          {/* BOTÓN ROJO DE CINE */}
+          <button 
+            type="submit" 
+            className="btn btn-danger w-100 py-2 fw-bold"
+            style={{ fontSize: '1.1rem', letterSpacing: '1px' }}
+          >
+            REGISTRARME
           </button>
         </form>
 
-        {/* Enlace para volver al Login */}
-        <p className="mt-3 text-center text-black">
-          ¿Ya tienes una cuenta? <a className= "text-success" href="/login" onClick={() => navigate('/login')}>Iniciar Sesión</a>
-        </p>
+        {/* LINK VOLVER */}
+        <div className="mt-4 text-center">
+            <span className="text-secondary">¿Ya tienes una cuenta? </span>
+            <Link to="/login" className="text-danger fw-bold text-decoration-none">
+                Iniciar Sesión
+            </Link>
+        </div>
+
       </div>
     </div>
   );
